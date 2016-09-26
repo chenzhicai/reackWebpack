@@ -5,7 +5,8 @@ require('styles//App.scss');
 let imageDatas = require('../data/imagedatas.json');
 
 import React from 'react';
-import ReactDOM from 'react-dom'
+
+var ReactDOM = require('react-dom');
 var ImgFigureObject = require('./ImgFigure');
 var ImgFigure = ImgFigureObject.ImgFigure;
 
@@ -26,6 +27,19 @@ class AppComponent extends React.Component {
     vPosRange: {    // 垂直方向的取值范围
         x: [0, 0],
         topY: [0, 0]
+    },
+    state: {
+      imgsArrangeArr: [
+            /*{
+                pos: {
+                    left: '0',
+                    top: '0'
+                },
+                rotate: 0,    // 旋转角度
+                isInverse: false,    // 图片正反面
+                isCenter: false,    // 图片是否居中
+            }*/
+        ]
     }
   }
 
@@ -135,28 +149,15 @@ class AppComponent extends React.Component {
     }.bind(this);
   }
 
-  getInitialState () {
-    return {
-        imgsArrangeArr: [
-            /*{
-                pos: {
-                    left: '0',
-                    top: '0'
-                },
-                rotate: 0,    // 旋转角度
-                isInverse: false,    // 图片正反面
-                isCenter: false,    // 图片是否居中
-            }*/
-        ]
-    };
-  }
+
 
   // 组件加载以后， 为每张图片计算其位置的范围
   componentDidMount () {
-
+    console.log("this.refs.stage:"+this.refs.stage);
     // 首先拿到舞台的大小
-    var stageDOM = ReactDOM.findDOMNode(this.refs.stage),
-        stageW = stageDOM.scrollWidth,
+    var stageDOM = ReactDOM.findDOMNode(this.refs.stage);
+    console.dir(stageDOM);
+    var stageW = stageDOM.scrollWidth,
         stageH = stageDOM.scrollHeight,
         halfStageW = Math.ceil(stageW / 2),
         halfStageH = Math.ceil(stageH / 2);
@@ -168,6 +169,7 @@ class AppComponent extends React.Component {
         halfImgW = Math.ceil(imgW / 2),
         halfImgH = Math.ceil(imgH / 2);
 
+ console.dir("this.constant",this);
     // 计算中心图片的位置点
     this.Constant.centerPos = {
         left: halfStageW - halfImgW,
@@ -205,7 +207,7 @@ class AppComponent extends React.Component {
           }
           />);
         });
-      return ( < section className = "state" >
+      return ( < section className = "stage"  ref="stage">
         < section className = "img-sec" > {
           ifDatas
         } < /section> < nav className = "controller-nav" > {
